@@ -6,6 +6,25 @@
 
 For an example of what a developer or customer can do with local search, start with the [Aurekai document workspace](https://aurekai-work-samples.pages.dev/documents/) or [local-first application guide](https://docs.aurekai.work/local-first-applications).
 
+## Shared library source
+
+The previous copied `libbonfyre` tree was byte-identical to the
+[`bonfyre-core`](https://github.com/Nickgonzales76017/bonfyre-core) owner.
+It has been replaced with a **pinned Git submodule** at the same include and
+link path; ONNX Runtime and SQLite remain separately installed dependencies.
+
+```sh
+git clone https://github.com/Nickgonzales76017/bonfyre-embed.git
+cd bonfyre-embed
+git submodule update --init -- vendor/bonfyre-core
+make -C vendor/bonfyre-core/lib/libbonfyre
+make -C cmd/bonfyre-embed
+```
+
+The last build step requires the platform ONNX Runtime/SQLite headers and
+libraries supported by this older Makefile; it is not a claimed portable
+clean-machine build. Updating the submodule pin requires a reviewed commit.
+
 ## What this source contains
 
 This repository preserves an **April 2026 extraction** of the embedding interface, with `cmd/bonfyre-embed/`, temporary vendored library dependencies and extraction notes. It is useful for reading and extending the original native implementation, but is not a separately versioned or supported package release.
